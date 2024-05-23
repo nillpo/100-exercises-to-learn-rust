@@ -3,6 +3,22 @@ struct Ticket {
     description: String,
     status: String,
 }
+enum Status {
+    ToDo,
+    InProgress,
+    Done,
+}
+
+impl Status {
+    fn from_str(status: &str) -> Option<Self> {
+        match status {
+            "To-Do" => Some(Self::ToDo),
+            "In Progress" => Some(Self::InProgress),
+            "Done" => Some(Self::Done),
+            _ => None,
+        }
+    }
+}
 
 impl Ticket {
     // TODO: implement the `new` function.
@@ -17,12 +33,41 @@ impl Ticket {
     // as well as some `String` methods. Use the documentation of Rust's standard library
     // to find the most appropriate options -> https://doc.rust-lang.org/std/string/struct.String.html
     fn new(title: String, description: String, status: String) -> Self {
-        todo!();
+        Self::validate_title(&title);
+        Self::validate_description(&description);
+        Self::validate_status(&status);
         Self {
             title,
             description,
             status,
         }
+    }
+
+    fn validate_status(status: &String) {
+        match Status::from_str(status) {
+            Some(_) => {}
+            None => panic!("Only `To-Do`, `In Progress`, and `Done` statuses are allowed"),
+        };
+    }
+
+    fn validate_empty(key: &str, str: &String) {
+        if str.is_empty() {
+            panic!("{} cannot be empty", key);
+        }
+    }
+    fn validate_string_size(key: &str, str: &String, size: usize) {
+        if str.as_bytes().len() > size {
+            panic!("{} cannot be longer than {} characters", key, size);
+        }
+    }
+    fn validate_title(str: &String) {
+        Self::validate_empty("Title", str);
+        Self::validate_string_size("Title", str, 50);
+    }
+
+    fn validate_description(str: &String) {
+        Self::validate_empty("Description", str);
+        Self::validate_string_size("Description", str, 500);
     }
 }
 
