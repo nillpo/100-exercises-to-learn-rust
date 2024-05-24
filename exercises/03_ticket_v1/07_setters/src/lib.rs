@@ -37,13 +37,23 @@ impl Ticket {
     pub fn title(&self) -> &String {
         &self.title
     }
-
+    pub fn set_title(&mut self, title: String) {
+        Self::validation_tile(&title);
+        self.title = title;
+    }
     pub fn description(&self) -> &String {
         &self.description
     }
-
+    pub fn set_description(&mut self, description: String) {
+        Self::validation_description(&description);
+        self.description = description;
+    }
     pub fn status(&self) -> &String {
         &self.status
+    }
+    pub fn set_status(&mut self, status: String) {
+        Self::validation_status(&status);
+        self.status = status;
     }
 }
 
